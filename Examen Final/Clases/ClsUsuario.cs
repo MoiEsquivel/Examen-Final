@@ -83,55 +83,44 @@ namespace Examen_Final.Clases
             return retorno;
         }
 
-        //public static int BuscarUsuario(string Correo)
-        //{
-        //    int retorno = 0;
-        //    int tipo = 0;
-        //    SqlConnection Conn = new SqlConnection();
-        //    try
-        //    {
-        //        using (Conn = Dboconn.obtenerConexion())
-        //        {
-        //            SqlCommand cmd = new SqlCommand("ListarCliente", Conn)
-        //            {
-        //                CommandType = CommandType.StoredProcedure
-        //            };
-        //            cmd.Parameters.Add(new SqlParameter("@nombre", Nombre));
-        //            cmd.Parameters.Add(new SqlParameter("@correo", Correo));
+        public static int BuscarUsuario(string Correo)
+        {
+            int retorno = 0;
+            int tipo = 0;
+            SqlConnection Conn = new SqlConnection();
+            try
+            {
+                using (Conn = Dboconn.obtenerConexion())
+                {
+                    SqlCommand cmd = new SqlCommand("Select * from Usuarios", Conn);                 
+                    
+                    using (SqlDataReader rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            ClsUsuario.clave = rdr["Clave"].ToString();
+                            ClsUsuario.nombre = rdr["Nombre"].ToString();
+                            ClsUsuario.apellido = rdr["Apellido"].ToString();
+                            ClsUsuario.correo = rdr["Usuario"].ToString();
+                         
+                            retorno = 1;
+                        }
 
-        //            // retorno = cmd.ExecuteNonQuery();
-        //            using (SqlDataReader rdr = cmd.ExecuteReader())
-        //            {
-        //                if (rdr.Read())
-        //                {
-        //                    ClsUsuario.Nombre = rdr["Nombre"].ToString();
-        //                    ClsUsuario.Apellido = rdr["Apellido"].ToString();
-        //                    ClsUsuario.Correo = rdr["Email"].ToString();
-        //                    ClsUsuario.Telefono = rdr["Telefono"].ToString();
-        //                    ClsUsuario.Tusuario = rdr["Tipo"].ToString();
-        //                    ClsUsuario.provivia = rdr["CodProv"].ToString();
-        //                    ClsUsuario.canton = rdr["CodCant"].ToString();
-        //                    ClsUsuario.distrito = rdr["CodDis"].ToString();
-        //                    ClsUsuario.señas = rdr["Señas"].ToString();
-        //                    ClsUsuario.codigo = rdr["Codigo"].ToString();
-        //                    retorno = 1;
-        //                }
+                    }
+                }
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                retorno = -1;
+            }
+            finally
+            {
+                Conn.Close();
+                Conn.Dispose();
+            }
 
-        //            }
-        //        }
-        //    }
-        //    catch (System.Data.SqlClient.SqlException ex)
-        //    {
-        //        retorno = -1;
-        //    }
-        //    finally
-        //    {
-        //        Conn.Close();
-        //        Conn.Dispose();
-        //    }
-
-        //    return retorno;
-        //}
+            return retorno;
+        }
         public static int BorrarUser(string User)
         {
             int retorno = 0;
@@ -147,6 +136,103 @@ namespace Examen_Final.Clases
                     };
 
                     cmd.Parameters.Add(new SqlParameter("@User", User));
+                    retorno = cmd.ExecuteNonQuery();
+
+                }
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                retorno = -1;
+            }
+            finally
+            {
+                Conn.Close();
+            }
+
+            return retorno;
+        }
+
+        public static int AgregarPlaca(string Nomb, int id, float monto)
+        {
+            int retorno = 0;
+            SqlConnection Conn = new SqlConnection();
+
+            try
+            {
+                using (Conn = Dboconn.obtenerConexion())
+                {
+                    SqlCommand cmd = new SqlCommand("NewPlaca", Conn)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+                    cmd.Parameters.Add(new SqlParameter("@Numplaca", Nomb));
+                    cmd.Parameters.Add(new SqlParameter("@iduser", id));
+                    cmd.Parameters.Add(new SqlParameter("@Monto", monto));
+
+
+                    retorno = cmd.ExecuteNonQuery();
+
+                }
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                retorno = -1;
+            }
+            finally
+            {
+                Conn.Close();
+            }
+
+            return retorno;
+        }
+        public static int ModificarPlaca(string Nplaca, string NuPlca, int id, float monto)
+        {
+            int retorno = 0;
+            int tipo = 0;
+            SqlConnection Conn = new SqlConnection();
+            try
+            {
+                using (Conn = Dboconn.obtenerConexion())
+                {
+                    SqlCommand cmd = new SqlCommand("ModificarPlaca", Conn)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+                    cmd.Parameters.Add(new SqlParameter("@Numplca", Nplaca));
+                    cmd.Parameters.Add(new SqlParameter("@Nplaca", NuPlca));
+                    cmd.Parameters.Add(new SqlParameter("@iduser", id));
+                    cmd.Parameters.Add(new SqlParameter("@Monto", monto));
+
+                    retorno = cmd.ExecuteNonQuery();
+
+                }
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                retorno = -1;
+            }
+            finally
+            {
+                Conn.Close();
+            }
+
+            return retorno;
+        }
+        public static int BorrarPlaca(string placa)
+        {
+            int retorno = 0;
+            int tipo = 0;
+            SqlConnection Conn = new SqlConnection();
+            try
+            {
+                using (Conn = Dboconn.obtenerConexion())
+                {
+                    SqlCommand cmd = new SqlCommand("EliminarPlaca", Conn)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+
+                    cmd.Parameters.Add(new SqlParameter("@Nplaca", placa));
                     retorno = cmd.ExecuteNonQuery();
 
                 }

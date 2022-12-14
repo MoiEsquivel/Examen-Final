@@ -28,7 +28,11 @@ namespace Examen_Final
 
         protected void Bbuscar_Click(object sender, EventArgs e)
         {
-
+            ClsUsuario.BuscarUsuario(Tbuscar.Text);
+            Tnombre.Text = ClsUsuario.nombre;
+            Tapellido.Text = ClsUsuario.apellido;
+            Tclave.Text = ClsUsuario.clave;
+            Tuser.Text = ClsUsuario.correo;
         }
 
         protected void Bmodificar_Click(object sender, EventArgs e)

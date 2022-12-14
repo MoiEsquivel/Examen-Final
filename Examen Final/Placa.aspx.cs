@@ -46,17 +46,19 @@ namespace Examen_Final
 
         protected void Beliminar_Click(object sender, EventArgs e)
         {
-
+            ClsUsuario.BorrarPlaca(Tplaca.Text);
+            Response.Redirect("Placa.aspx");
         }
 
         protected void Bmodificar_Click(object sender, EventArgs e)
         {
-
+            ClsUsuario.ModificarPlaca(Tplaca.Text,Tbuscar.Text,int.Parse(Tid.Text),float.Parse(Tmonto.Text));
+            Response.Redirect("Placa.aspx");
         }
 
         protected void Bagregar_Click(object sender, EventArgs e)
         {
-            ClsUsuario.Agregar(Tnombre.Text, Tapellido.Text, Tuser.Text, Tclave.Text);
+            ClsUsuario.AgregarPlaca(Tplaca.Text, int.Parse(Tid.Text), float.Parse(Tmonto.Text));
             Response.Redirect("Placa.aspx");
         }
     }
