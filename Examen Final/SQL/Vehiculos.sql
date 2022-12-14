@@ -31,6 +31,7 @@ as
 	begin
 	delete Usuarios where Usuario = @User
 	end
+	exec EliminarUser 'moi@uh.com'
 
 create procedure ModificarUser
 @User nvarchar(50),
@@ -80,17 +81,25 @@ as
 	begin
 	update Placa set NumeroPlaca = @Numplaca, Id_Usuario = @iduser,  Monto = @Monto where NumeroPlaca = @Nplaca 
 	end
-Create procedure Reporte
-@NumPlaca int
+create procedure Reporte
+@NumPlaca nvarchar(6)
 as
 	begin
 		SELECT us.Nombre, us.Apellido,p.NumeroPlaca ,p.Monto, p.Monto * 0.13 AS IVA, p.Monto * 1.13 AS Total
 		FROM Usuarios us
 		inner Join Placa p on p.Id_Usuario = us.Id_Usuario where p.NumeroPlaca = @NumPlaca
 	end
-	create procedure Listar
-	@user
-	as
-	begin
+
+	create Procedure ValidarUsuario
+@email nvarchar(50),
+@clave nvarchar(30)
+as
+begin
+	Select Usuario,Clave
+	from Usuarios where Usuario = @email and Clave = @clave 
+end
+
+exec ValidarUsuario 'moi@uh.com','321'
+
 select* from Usuarios
 select* from Placa

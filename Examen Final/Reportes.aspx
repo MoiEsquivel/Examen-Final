@@ -13,5 +13,12 @@
         <asp:Button ID="Bbuscar" runat="server" Text="Buscar" OnClick="Bbuscar_Click"  />
     </div>
 
+    <div>
+        
+ <asp:GridView ID="GridView1" runat="server" CssClass="mydatagrid" PagerStyle-CssClass="pager"
+                HeaderStyle-CssClass="header" RowStyle-CssClass="rows" AllowPaging="True" >
+            </asp:GridView>
+    </div>
+
 
 </asp:Content>

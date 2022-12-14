@@ -55,7 +55,7 @@
 					</div>
 					
 					<div class="container-login100-form-btn">						
-						<asp:Button ID="Bingreso" class="login100-form-btn" runat="server" Text="Ingresar" />
+						<asp:Button ID="Bingreso" class="login100-form-btn" runat="server" Text="Ingresar" OnClick="Bingreso_Click" />
 					</div>
 
 					<div class="text-center p-t-12">

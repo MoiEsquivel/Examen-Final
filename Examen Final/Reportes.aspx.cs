@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Examen_Final.Clases;
 
 namespace Examen_Final
 {
@@ -14,18 +15,14 @@ namespace Examen_Final
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         protected void Bbuscar_Click(object sender, EventArgs e)
         {
-         
-               
-                                
-                    
-
-            
-            
+            DataTable dt = new DataTable();
+            GridView1.DataSource = ClsUsuario.Listar(Tbuscar.Text);
+            GridView1.DataBind();
         }
     }
 }

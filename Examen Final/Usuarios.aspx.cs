@@ -43,7 +43,7 @@ namespace Examen_Final
         
         protected void Beliminar_Click(object sender, EventArgs e)
         {
-            ClsUsuario.BorrarUser(Tuser.Text);
+            ClsUsuario.BorrarUser(Tbuscar.Text);
             Response.Redirect("Usuarios.aspx");
         }
 

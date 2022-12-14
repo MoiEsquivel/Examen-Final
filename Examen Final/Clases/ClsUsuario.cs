@@ -92,7 +92,7 @@ namespace Examen_Final.Clases
             {
                 using (Conn = Dboconn.obtenerConexion())
                 {
-                    SqlCommand cmd = new SqlCommand("Select * from Usuarios", Conn);                 
+                    SqlCommand cmd = new SqlCommand("Select * from Usuarios where Usuario='"+Correo+"'", Conn);                 
                     
                     using (SqlDataReader rdr = cmd.ExecuteReader())
                     {
@@ -103,6 +103,42 @@ namespace Examen_Final.Clases
                             ClsUsuario.apellido = rdr["Apellido"].ToString();
                             ClsUsuario.correo = rdr["Usuario"].ToString();
                          
+                            retorno = 1;
+                        }
+
+                    }
+                }
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                retorno = -1;
+            }
+            finally
+            {
+                Conn.Close();
+                Conn.Dispose();
+            }
+
+            return retorno;
+        }
+        public static int BuscarPlaca(string Correo)
+        {
+            int retorno = 0;
+            int tipo = 0;
+            SqlConnection Conn = new SqlConnection();
+            try
+            {
+                using (Conn = Dboconn.obtenerConexion())
+                {
+                    SqlCommand cmd = new SqlCommand("Select * from Placa where NumeroPlaca = '"+Correo+"'", Conn);
+
+                    using (SqlDataReader rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            ClsUsuario.clave = rdr["NumeroPlaca"].ToString();
+                            ClsUsuario.nombre = rdr["Id_Usuario"].ToString();
+                            ClsUsuario.apellido = rdr["Monto"].ToString();
                             retorno = 1;
                         }
 
@@ -185,10 +221,9 @@ namespace Examen_Final.Clases
 
             return retorno;
         }
-        public static int ModificarPlaca(string Nplaca, string NuPlca, int id, float monto)
+        public static int ModificarPlaca(string Numplaca, string NPlca, int id, float monto)
         {
             int retorno = 0;
-            int tipo = 0;
             SqlConnection Conn = new SqlConnection();
             try
             {
@@ -198,8 +233,8 @@ namespace Examen_Final.Clases
                     {
                         CommandType = CommandType.StoredProcedure
                     };
-                    cmd.Parameters.Add(new SqlParameter("@Numplca", Nplaca));
-                    cmd.Parameters.Add(new SqlParameter("@Nplaca", NuPlca));
+                    cmd.Parameters.Add(new SqlParameter("@Numplaca", Numplaca));
+                    cmd.Parameters.Add(new SqlParameter("@Nplaca", NPlca));
                     cmd.Parameters.Add(new SqlParameter("@iduser", id));
                     cmd.Parameters.Add(new SqlParameter("@Monto", monto));
 
@@ -244,6 +279,88 @@ namespace Examen_Final.Clases
             finally
             {
                 Conn.Close();
+            }
+
+            return retorno;
+        }
+
+        public static DataTable Listar(string Cod)
+        {
+            int retorno = 1;
+            SqlConnection Conn = new SqlConnection();
+            DataTable dt = new DataTable();
+
+            try
+            {
+                using (Conn = Dboconn.obtenerConexion())
+                {
+
+                    SqlCommand cmd = new SqlCommand("Reporte", Conn)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+                    cmd.Parameters.Add(new SqlParameter("@NumPlaca", Cod));
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        retorno = cmd.ExecuteNonQuery();
+                        cmd.Connection = Conn;
+                        sda.SelectCommand = cmd;
+                        using (dt = new DataTable())
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            sda.Fill(dt);
+                            return dt;
+                        }
+                    }
+
+                }
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                retorno = -1;
+            }
+            finally
+            {
+                // Conn.Close();
+            }
+            return dt;
+        }
+        public static int ValidarLogin(string Correo, string Clave)
+        {
+            int retorno = 0;
+            SqlConnection Conn = new SqlConnection();
+            try
+            {
+                using (Conn = Dboconn.obtenerConexion())
+                {
+                    SqlCommand cmd = new SqlCommand("ValidarUsuario", Conn)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+                    cmd.Parameters.Add(new SqlParameter("@Email", Correo));
+                    cmd.Parameters.Add(new SqlParameter("@Clave", Clave));
+
+                    // retorno = cmd.ExecuteNonQuery();
+                    using (SqlDataReader rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            
+                            retorno = 1;
+                        }
+
+                    }
+                }
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                retorno = -1;
+            }
+            finally
+            {
+                Conn.Close();
+                Conn.Dispose();
             }
 
             return retorno;

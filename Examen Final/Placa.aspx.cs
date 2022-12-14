@@ -20,7 +20,10 @@ namespace Examen_Final
 
         protected void Bbuscar_Click(object sender, EventArgs e)
         {
-
+            ClsUsuario.BuscarPlaca(Tbuscar.Text);
+            Tplaca.Text = ClsUsuario.clave;
+            Tid.Text = ClsUsuario.nombre;
+            Tmonto.Text = ClsUsuario.apellido;
         }
         protected void LlenarGrid()
         {
